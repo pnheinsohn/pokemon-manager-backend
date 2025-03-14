@@ -1,5 +1,5 @@
-from django.utils import timezone
 import time
+from django.utils import timezone
 
 from config.celery import celery_app
 from apps.pokemons.models import Pokemon

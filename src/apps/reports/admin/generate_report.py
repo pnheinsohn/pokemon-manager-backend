@@ -1,4 +1,3 @@
-from datetime import datetime
 from ninja import Schema
 from django.utils import timezone
 

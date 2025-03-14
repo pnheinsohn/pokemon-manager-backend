@@ -1,5 +1,4 @@
 from ninja import Schema
-from django.utils import timezone
 
 from apps.reports.admin.router import router
 from apps.reports.models import Report

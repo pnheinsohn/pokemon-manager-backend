@@ -1,6 +1,5 @@
 from ninja import Schema
 from django.db import transaction
-from django.forms import ValidationError
 
 from apps.pokemons.admin.router import router
 from apps.pokemons.models import BasePokemonType
