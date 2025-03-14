@@ -26,12 +26,12 @@ def create_pokemon(request, base_pokemon_id: int, payload: CreatePokemonPayloadS
         base_pokemon=base_pokemon,
         level=level,
         nickname=payload.nickname,
-        hp=int(base_pokemon.base_hp * (1 + (level.value * 0.1))),
-        attack=int(base_pokemon.base_attack * (1 + (level.value * 0.1))),
-        defense=int(base_pokemon.base_defense * (1 + (level.value * 0.1))),
-        special_attack=int(base_pokemon.base_special_attack * (1 + (level.value * 0.1))),
-        special_defense=int(base_pokemon.base_special_defense * (1 + (level.value * 0.1))),
-        speed=int(base_pokemon.base_speed * (1 + (level.value * 0.1))),
+        hp=int(base_pokemon.base_hp * (1 + ((level.value - 1) * 0.1))),
+        attack=int(base_pokemon.base_attack * (1 + ((level.value - 1) * 0.1))),
+        defense=int(base_pokemon.base_defense * (1 + ((level.value - 1) * 0.1))),
+        special_attack=int(base_pokemon.base_special_attack * (1 + ((level.value - 1) * 0.1))),
+        special_defense=int(base_pokemon.base_special_defense * (1 + ((level.value - 1) * 0.1))),
+        speed=int(base_pokemon.base_speed * (1 + ((level.value - 1) * 0.1))),
     )
 
     return CreatePokemonResponseSchema(success=True)
