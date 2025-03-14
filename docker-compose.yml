@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./src:/app/src
+      - django_data:/app/src/data
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./src/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  celery_worker:
+    build: .
+    command: poetry run celery -A config worker --loglevel=info
+    volumes:
+      - ./src:/app/src
+      - django_data:/app/src/data
+    env_file:
+      - ./src/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./devops/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./devops/definitions.json:/etc/rabbitmq/definitions.json:ro
+    environment:
+      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flower:
+    build: .
+    command: poetry run celery -A config flower --port=5555
+    volumes:
+      - ./src:/app/src
+      - django_data:/app/src/data
+    ports:
+      - "5555:5555"
+    env_file:
+      - ./src/.env
+    depends_on:
+      - rabbitmq
+      - celery_worker
+
+volumes:
+  django_data:

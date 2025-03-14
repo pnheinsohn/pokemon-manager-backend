@@ -1,0 +1,2 @@
+from apps.reports.tasks.generate_most_common_base_pokemon_report import generate_most_common_base_pokemon_report
+from apps.reports.tasks.generate_highest_level_pokemon_report import generate_highest_level_pokemon_report
